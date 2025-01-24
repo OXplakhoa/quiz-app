@@ -8,6 +8,15 @@ export default function Question({ index, handleSkipAnswer }) {
     selectedAnswer: "",
     isCorrect: null,
   });
+
+  let timer = 10000;
+  if (answer.selectedAnswer) {
+    timer = 1000;
+  }
+  if (answer.isCorrect !== null) {
+    timer = 2000;
+  }
+
   const handleSelectAnswer = (answer) => {
     setAnswer({
       selectedAnswer: answer,
@@ -30,15 +39,20 @@ export default function Question({ index, handleSkipAnswer }) {
     answerState = "answered";
   }
   return (
-      <div id="question">
-        <QuestionTimer timeout={5000} onTimeout={handleSkipAnswer} />
-        <h2>{questions[index].text}</h2>
-        <Answers
-          answerState={answerState}
-          selectedAnswer={answer.selectedAnswer}
-          answers={questions[index].answers}
-          handleSelectAnswer={handleSelectAnswer}
-        />
-      </div>
+    <div id="question">
+      <QuestionTimer
+        key={timer}
+        timeout={timer}
+        onTimeout={handleSkipAnswer}
+        mode={answerState}
+      />
+      <h2>{questions[index].text}</h2>
+      <Answers
+        answerState={answerState}
+        selectedAnswer={answer.selectedAnswer}
+        answers={questions[index].answers}
+        handleSelectAnswer={handleSelectAnswer}
+      />
+    </div>
   );
 }
